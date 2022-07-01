@@ -362,3 +362,16 @@ It is a powerful tool for creating flexible and maintainable software alike.
 "Software entities (classes, modules, functions, and so on) should be open for extension but closed for modification.” Bertrand Meyer.
 
 Or in other words, you should be able to change the class behaviors from the outside without altering the code itself.
+
+###### Composition over inheritance
+
+Composition improves code reuse since multiple classes can use those other smaller
+classes. The idea is to have an object use other objects to achieve the correct behaviors instead of inheriting a base class.
+
+Combining composition and dependency injection allows to follow the Open/Close principle.
+
+The first appearance of the OCP, in 1988, was referring to inheritance, and OOP has evolved
+a lot since then. You should, most of the time, opt for composition over inheritance.
+Inheritance is still a useful concept, but you should be careful when using it; it is a concept
+that is easy to misuse, creating direct coupling between classes and deep hierarchy. We
+explore that more throughout the book.

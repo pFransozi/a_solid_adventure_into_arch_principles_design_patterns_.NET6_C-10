@@ -1,6 +1,12 @@
 using NinjaShared;
 using System.Numerics;
 
+/*
+The hardcoded dependency of weapons is an issue in this class because if we want to modify the set,
+we must create a new one that define a new set of weapons; the idea to improve this is change a
+hardcoded dependency for a dynamic one, using for that dependency injection.
+*/
+
 namespace NinjaBeforeOCP;
 
 public class Ninja : IAttackable, IAttacker
