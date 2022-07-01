@@ -1,8 +1,22 @@
 namespace SRP;
 
+/*
+There is a lot of responsability in this Class, which seems as
+a God Class.
 
+Data and operations over data are in the same class. 
+Additionally the presenter role.
 
+There are three roles in this class:
+1. data role
+2. data access role
+3. presenter role
 
+Attribute NextId has no encapsulation as well as Books,
+breaking the encapsulation and leaking the creation logic to
+the consumer.
+
+*/
 public class Book
 {
     public int Id { get; set; }

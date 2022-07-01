@@ -1,1 +1,0 @@
-1. Pattern / Anti-patterns and code smells.

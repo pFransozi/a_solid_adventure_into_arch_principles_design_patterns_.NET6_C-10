@@ -35,7 +35,7 @@ Other examples:
 2. **Long methods**: it is when a method start to extend more than 10 to 15 lines of code. Some causes of a long method, can be:
 
 1.it contains complex logic intertwined in multiple conditional statements.
-2.it contains a big switch blockhttps://docs.microsoft.com/en-us/aspnet/core/fundamentals/app-state?view=aspnetcore-6.0
+2.it contains a big switch block
 3.it does too many things
 4.it contains duplicate code
 
@@ -60,14 +60,6 @@ An alternative to solver those causes can be:
 |dotnet publish|Publish the current application, based on the .csproj or .sln file present in the current directory, to a directory or remote location, such as a hosting provider. It implicitly runs the build and restore commands first|
 |dotnet pack|Create a NuGet package based on the .csproj or .sln file present in the current directory. It implicitly runs the build and restore commands first. You don’t need a .nuspec file|
 |dotnet clean| Clean the build(s) output of a project or solution based on the .csproj or .sln file present in the current directory|
-
-### Further reading
-
-https://docs.microsoft.com/en-us/aspnet/core/fundamentals/app-state?view=aspnetcore-6.0
-https://docs.microsoft.com/en-us/dotnet/core/versions/
-https://docs.microsoft.com/en-us/dotnet/core/tools/
-https://docs.microsoft.com/en-us/dotnet/core/tools/custom-templates
-https://docs.microsoft.com/en-us/aspnet/core/fundamentals/app-state?view=aspnetcore-6.0
 
 ### Automated testing
 
@@ -311,10 +303,6 @@ Integration tests are harder to organize **because they depend on multiple units
 
 **To help with that, the test requirements usually revolve around the inputs and outputs.** The interaction between two components or two systems **should always be tied to a data contract**, whether using a classic request/response model over a REST API where the data contract is the API signature, or using an event-driven architecture approach and the data contract is the event signature or, even simpler, ComponentA returns an object that is injected into  ComponentB; the correctness of those interactions gravitates around the ins and outs.
 
-#### Further reading
-
-https://xunit.net/
-
 ### Architectural Principles
 
 Fundamental architectural principles, those are the foundation of modern software engineering.
@@ -351,3 +339,26 @@ Let’s review why that principle exists:
 * To make **our classes more readable**. Fewer responsibilities lead to less code, and less code
 is simpler to visualize in a few seconds, leading to a quicker understanding of that piece of
 software.
+
+SRP must not be thinking as an over-separate method because more classes in a system, the more complex to assemble the system can become, and harder it can be to debug, follow execution paths. On the other, well-separated responsibilities should lead to a better and testable system.
+
+To follow a single responsibility, aim at packing a cohesive set of functionalities in a single class that revolves around its responsability.
+
+To indicators of SRP violation:
+
+1. it become harder to name a class; and remember name classes, methods and other elementos in a clear and significant way is very important.
+2. a method become too big.
+
+##### What is an interface?
+
+It is a powerful tool for creating flexible and maintainable software alike.
+
+* The role of an interface is to define a cohesive contract (public methods, properties, and events). In its theoretical form, there is no code in an interface; it is only a contract. In practice, since C# 8, we can create default implementation in interfaces, which could be helpful to limit breaking changes in a library (such as adding a method to an interface without breaking any class implementing that interface).
+* An interface should be small (ISP), and its members should align toward a common goal (cohesion) and share a single responsibility (SRP).
+* In C#, a class can implement multiple interfaces, exposing multiples of those public contracts, or, more accurately, be any and all of them. By leveraging polymorphism, a class can be used as any of the interfaces it implements as well as its supertype (if any).
+
+##### Open/Closed principle (OCP)
+
+"Software entities (classes, modules, functions, and so on) should be open for extension but closed for modification.” Bertrand Meyer.
+
+Or in other words, you should be able to change the class behaviors from the outside without altering the code itself.
