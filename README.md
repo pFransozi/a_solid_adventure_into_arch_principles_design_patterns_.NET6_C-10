@@ -312,7 +312,7 @@ Fundamental architectural principles, those are the foundation of modern softwar
 3. DRY principle
 4. KISS principle
 
-#### The SOLID principles
+### The SOLID principles
 
 SOLID extends the basic OOP concepts of Abstraction, Encapsulation, Inheritance, and Polymorphism. It is also important to note that they are principles, not rules to follow at all costs. **Weigh the cost in the context of what you are building**.
 
@@ -325,7 +325,7 @@ The SOLID acronym represents the following:
 
 **By following these principles, your systems should become easier to test and maintain**.
 
-##### Single responsibility principle (SRP)
+### Single responsibility principle (SRP)
 
 the SRP means that a single class should hold one, and only one, responsibility, leading
 me to the following quote: “There should never be more than one reason for a class to change.”
@@ -349,7 +349,7 @@ To indicators of SRP violation:
 1. it become harder to name a class; and remember name classes, methods and other elementos in a clear and significant way is very important.
 2. a method become too big.
 
-##### What is an interface?
+### What is an interface?
 
 It is a powerful tool for creating flexible and maintainable software alike.
 
@@ -357,13 +357,13 @@ It is a powerful tool for creating flexible and maintainable software alike.
 * An interface should be small (ISP), and its members should align toward a common goal (cohesion) and share a single responsibility (SRP).
 * In C#, a class can implement multiple interfaces, exposing multiples of those public contracts, or, more accurately, be any and all of them. By leveraging polymorphism, a class can be used as any of the interfaces it implements as well as its supertype (if any).
 
-##### Open/Closed principle (OCP)
+### Open/Closed principle (OCP)
 
 "Software entities (classes, modules, functions, and so on) should be open for extension but closed for modification.” Bertrand Meyer.
 
 Or in other words, you should be able to change the class behaviors from the outside without altering the code itself.
 
-###### Composition over inheritance
+### Composition over inheritance
 
 Composition improves code reuse since multiple classes can use those other smaller
 classes. The idea is to have an object use other objects to achieve the correct behaviors instead of inheriting a base class.
@@ -375,3 +375,66 @@ a lot since then. You should, most of the time, opt for composition over inherit
 Inheritance is still a useful concept, but you should be careful when using it; it is a concept
 that is easy to misuse, creating direct coupling between classes and deep hierarchy. We
 explore that more throughout the book.
+
+### Liskov substitution principle (LSP)
+
+The LSP focuses on preserving subtype behaviors, which leads to system stability. This principle means that you should be able to swap an object of type T with an object of type S, where S is the sybtype of T, without breaking your program's correctness.
+
+Then, if a subtype is swapped by the superclass, the correctness of the program does not break. 
+
+* Any precondition implemented in a supertype should yield the same outcome in its subtypes, but subtypes can be less strict about it, never more. For example, if a supertype validates that an argument cannot be null, the subtype could remove that validation but not add stricter validation rules.
+
+* Any postcondition implemented in a supertype should yield the same outcome in its subtypes, but aubtypes can be more strict about it, never less. For example, if the supertype never returns null, the subtype should not return null either or risk breaking the consumers of the object that are not testing for null. For example, if the supertype never returns null ,
+the subtype should not return null either or risk breaking the consumers of the object that are not testing for null . On the other hand, if the supertype does not guarantee the returned value cannot be null , then a subtype could decide never to return null, making both instances interchangeable.
+
+* Subtypes must preserve the invariance of the supertype. The behaviors of the supertype must not change. For example, a supertype must pass all the tests written for the supertype, so there is no variance between them.
+
+* In your subtypes, add new behaviors, do not change existing ones.
+
+### Interface Segregation Principle (ISP)
+
+“Many client-specific interfaces are better than one general-purpose interface.”
+
+It means:
+
+* create interfaces
+* value small interfaces more
+* not try to create a multipurpose interface as 'an interface to rule them all'
+
+**ISP is about a smaller cohesive set of functionalities that can be reused and extended**.
+
+The last but not the least, be careful not to overuse this principle blindly. Think about cohesion and what you are trying to build, and not about how granular an interface can blindly become.
+
+### Dependency Inversion Principle (DIP)
+
+"One should “depend upon abstractions, [not] concretions."
+
+Interfaces are one of the pivotal elements of our SOLID arsenal. Moreover, using interfaces is the best way to approach the DIP. Of course, abstract classes are also abstrations, but you should depend on interfaces whenever possible instead.
+
+An abstraction class is an abstraction but is not 100% abstract, and if it is, you should replace it with an interface.
+
+Abstract classes are used to encapsulate default behaviors that you can then inherit in sub-classes. They are helpful, but interfaces are more flexible, more powerful, and better suited to design contracts.
+
+Consider a direct dependency:
+
+Ninja class directly depends on Sword class.
+Ninja ------> Sword
+
+To invert dependency:
+
+Ninja -----------> IWeapon <--------------- Sword.
+
+### Other important principles
+
+* Separation of concerns
+
+    Separate your software into logical blocks, where each block is a concern. Concern can be a significant matter or a tiny detail; nonetheless, it is imperative to consider concerns when dividing your software into pieces to create cohesive units. 
+
+* Don't repeat yourself (DRY)
+
+    When you have duplicated logic in your system, encapsulate it and reuse that new encapsulation in multiple places instead.
+
+* Keep it simple, stupid (KISS)
+
+## Section 2: designing for ASP.NET core
+
