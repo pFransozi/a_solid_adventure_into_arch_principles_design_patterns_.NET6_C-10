@@ -378,9 +378,7 @@ explore that more throughout the book.
 
 ### Liskov substitution principle (LSP)
 
-The LSP focuses on preserving subtype behaviors, which leads to system stability. This principle means that you should be able to swap an object of type T with an object of type S, where S is the sybtype of T, without breaking your program's correctness.
-
-Then, if a subtype is swapped by the superclass, the correctness of the program does not break. 
+The LSP focuses on preserving subtype behaviors, which leads to system stability. This principle mom linguagem de programação Java.lass, the correctness of the program does not break. 
 
 * Any precondition implemented in a supertype should yield the same outcome in its subtypes, but subtypes can be less strict about it, never more. For example, if a supertype validates that an argument cannot be null, the subtype could remove that validation but not add stricter validation rules.
 
@@ -413,15 +411,7 @@ Interfaces are one of the pivotal elements of our SOLID arsenal. Moreover, using
 
 An abstraction class is an abstraction but is not 100% abstract, and if it is, you should replace it with an interface.
 
-Abstract classes are used to encapsulate default behaviors that you can then inherit in sub-classes. They are helpful, but interfaces are more flexible, more powerful, and better suited to design contracts.
-
-Consider a direct dependency:
-
-Ninja class directly depends on Sword class.
-Ninja ------> Sword
-
-To invert dependency:
-
+Abstract classes are used to encapsulate default behaviors that you can then inherit in sub-classes. They are helpful, but interfaces are more flexible, more powerful, and better suited to design contracts.1.
 Ninja -----------> IWeapon <--------------- Sword.
 
 ### Other important principles
