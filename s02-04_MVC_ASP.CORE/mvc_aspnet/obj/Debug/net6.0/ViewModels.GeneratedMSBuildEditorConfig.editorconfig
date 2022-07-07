@@ -1,0 +1,56 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = ViewModels
+build_property.RootNamespace = ViewModels
+build_property.ProjectDir = /home/philipehf/IT/github.com/pFransozi/An-Atypical-ASP.NET-Core-6-Design-Patterns-Guide/C04/ViewModels/
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = /home/philipehf/IT/github.com/pFransozi/An-Atypical-ASP.NET-Core-6-Design-Patterns-Guide/C04/ViewModels
+build_property._RazorSourceGeneratorDebug = 
+
+[/home/philipehf/IT/github.com/pFransozi/An-Atypical-ASP.NET-Core-6-Design-Patterns-Guide/C04/ViewModels/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/philipehf/IT/github.com/pFransozi/An-Atypical-ASP.NET-Core-6-Design-Patterns-Guide/C04/ViewModels/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/philipehf/IT/github.com/pFransozi/An-Atypical-ASP.NET-Core-6-Design-Patterns-Guide/C04/ViewModels/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/philipehf/IT/github.com/pFransozi/An-Atypical-ASP.NET-Core-6-Design-Patterns-Guide/C04/ViewModels/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/philipehf/IT/github.com/pFransozi/An-Atypical-ASP.NET-Core-6-Design-Patterns-Guide/C04/ViewModels/Views/Students/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudHMvQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/philipehf/IT/github.com/pFransozi/An-Atypical-ASP.NET-Core-6-Design-Patterns-Guide/C04/ViewModels/Views/Students/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudHMvRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/philipehf/IT/github.com/pFransozi/An-Atypical-ASP.NET-Core-6-Design-Patterns-Guide/C04/ViewModels/Views/Students/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudHMvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/philipehf/IT/github.com/pFransozi/An-Atypical-ASP.NET-Core-6-Design-Patterns-Guide/C04/ViewModels/Views/Students/_CreateOrEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudHMvX0NyZWF0ZU9yRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/philipehf/IT/github.com/pFransozi/An-Atypical-ASP.NET-Core-6-Design-Patterns-Guide/C04/ViewModels/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/philipehf/IT/github.com/pFransozi/An-Atypical-ASP.NET-Core-6-Design-Patterns-Guide/C04/ViewModels/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
