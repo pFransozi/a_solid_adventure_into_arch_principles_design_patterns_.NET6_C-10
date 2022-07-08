@@ -438,3 +438,196 @@ Ninja -----------> IWeapon <--------------- Sword.
 
 ## Section 2: designing for ASP.NET core
 
+### The Model View Controller design pattern
+
+In a classic server-rendered web user interface, the objective of the MVC pattern is to separate the rendering of a page into three distinct components that interact each other. It helps have smaller pieces that are easier to maintain instead of one bigger piece.
+
+Then, MVC divide application into three distinct parts, where each has a single responsibility:
+
+* model: it is a data structure representing the domain that we are modeling
+* view: it is to present a model to a user as a web user interface, so mainly HTML, CSS, JS
+* controller: it is the key component. It plays a coordinating role between the request from a user and its response. The controller's code should remain minimal and should not include complex logic or manipulation. The controller's primary responsibility is to handle requests and dispatch responses. The controller is an HTTP bridge.
+
+### Anatomy of ASP.NET Core MVC
+
+**Controller**: through a easiest way a controller may be created as a class inheriting from Microsoft.AspNetCore.Mvc.Controller.
+
+* A controller exposes one or more actions
+* an action can take zero or more input parameters
+* an action can return zero or one output value
+* the action is what handles the actual request
+* we can group cohesive actions under the same controller, thus creating a unit.
+
+**Model**: it is a class that contain properties and methods.
+
+**View**: Razor is a C#-based templating language that allows creating HTML-like pages and views (there is also a VB.NET version). Razor is a very convenient way of writing complex web UI logic productively. Razor views are stored in .cshtml files. The Razor view engine compiles that markup to C# classes
+that ASP.NET Core MVC leverages to render the HTML to the users.
+
+### Default routing
+
+ASP.NET Core has a routing mechanism that allows developers to define one or more routes to know **which controller should handle a specific HTTP request**. **A route is a URL template that maps HTTP requests to C# code**.
+
+Let's take a look at MVC template Program.cs files.
+
+`app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");`
+
+* controller:
+    * {controller} maps the request to a {controller}Controller class. For example, Home would map to the HomeController class.
+    * {controller=Home} means that the HomeController class is the default controller, which is used if no {controller} is supplied.
+* actions:
+    * {action} maps the request to a controller method.
+    * {action=Index} means that the Index method is the default action. For example. if we had a ProductsController class in our application, making a GET request to https://localhost/Products would make MVC invoke the ProductsController.Index() method. Note that in a CRUD controller (create, read, update, delete), Index is where you usually define your list.
+* parameter
+    * {id} means that any value following the action name maps to the id parameter of that action method.
+    * the ? in {id?} means the parameter is optional
+    * some examples:
+        * /Some/Action would map to SomeController.Action()
+        * /Some would map to SomeController.Index()
+        * / would map to HomeController.Index()
+        * /SomeAction/123 would map to SomeController.Action(123)
+
+MVC and Solid. Using MVC it is possible explore some aspects of SOLID, not all.
+
+* S = the MVC pattern divides the rendering of a page into three different roles
+* O = N/A
+* L = N/A
+* I = based on the three small responsibilities that were created from the three roles of MVC, up to a certain extent we have to dealing with three interfaces. However, controllers can become bloated with capabilities and contain many actions. a simple CRUD controller has a total of eight actions to begin with: one action for the list and the details page, and two actions for the create, edit, and delete pages. From there if you add more capabilities, the controller will just become fatter and fatter. One way to help is to create reusable components.
+* D = N/A
+
+### View Model design pattern
+
+**The view model comes into play where the application access data from a data source and then render a view based on that data. But instead of sending the raw data to the view, the required data is copied to another class that carries only the required data to render**.
+
+It is allowed presentation-centric features to the view model, composing with filtering, sorting without altering data domain models. And so, in line with Single Responsibility Principles (ISP) 
+
+The main goal of a View Model is decoupling the other parts of the software from the view, creating a model specific to a view.
+
+Some benefits are: views are not coupled with each other, reducing the maintenance issues; view models allow developers to gather data in a particular format and send it to the view in another one that's better suited for rendering that specific view, improving the application's testability, quality and stability.
+
+**The View Model defines a clear line between the user interfaces and the domain, decoupling model from the view.**
+
+Using the View Model pattern helps us follow the SOLID principles in the following ways:
+* S: A view model **adds clear boundaries between the domain model and the view**, leading to **two distinct responsibilities to help keep things isolated**.
+* O: N/A
+* L: N/A
+* I: A view model allows us to **limit the amount of information sent to the view**, keeping that information to a minimum. The **View Model pattern introduces two possibly smaller interfaces: one for the view and one for the domain**.
+* D: N/A
+
+In summary, view model helps to decouple the model from the presentation. Then, the view has only one responsibility, which is display the UI.
+
+## MVC pattern for Web APIs
+
+### An overview of REST
+
+REST is a way to create internet-based services, that commonly use HTTP. It allows the well-known HTTP specifications to be reused instead of recreating new ways of exchanging data.
+
+* each HTTP endpoint is a resource
+* each resource can be secured independently
+* calling the same resource twice should result in the same operation executed twice. Executing two POST /entities result in two new entities; GET /entities/some-id return the same entity twice.
+* the service should be stateless, which means that it does not persist information about its clients between requests.
+* the response from a RESTful service (GET) should be cacheable
+
+### HTTP methods
+
+HTTP methods are also known as verbs:
+
+GET: read data: a list or a single entity; success status code is 200 ok;
+POST: create a new entity; success status code is 201 created;
+PUT: replace an entity; success status code is 200 ok or 204 no content;
+DELETE: delete an entity; success status code is 200 ok or 204 no content;
+PATCH: partially update an entity; success status code is 200 ok.
+
+### Status code
+
+|Status code| role|
+|-----------|-----|
+|200 OK |Tells the client the request has succeeded. **It usually includes data related to an operation or an entity in the body of the response**|
+|201 CREATED|Tells the client the request has succeeded and the system created a resource. **It should also include a Location HTTP header pointing to the newly created resource and including the new entity in the response body**|
+|202 ACCEPTED|Tells the client **the request has been accepted for processing but is not processed yet**. In an event-driven system (see Chapter 16, Introduction to Microservices Architecture), this could mean that an event has been published, the current resource has completed its job (published the event), but to know more, the client needs to contact another resource, wait for a notification, just wait, or can’t know|
+|204 NO CONTENT|Tells the client the request has succeeded with no content in the response body|
+|302 FOUND|Tells the client to follow the specified Location header, which represents the redirection target|
+|400 BAD REQUEST|Tells the client about a validation error, generally related to badly formatted input data, missing data, or something similar|
+|401 UNAUTHORIZED|Tells the client that it must authenticate to access the resource|
+|403 FORBIDDEN|Tells the client that it does not have the required rights to access the resource (authorization)|
+|404 NOT FOUND|Tells the client that the resource does not exist or was not found|
+|409 CONFLICT|Tells the client that a conflict has occurred. A typical scenario would be that the entity has changed between its last GET and its current operation (likely a PUT request)|
+|500 INTERNAL SERVER ERROR|Tells the client that an unhandled error occurred on the server side and prevented it from fulfilling the request|
+
+* The 1XX status code (omitted from the preceding table) represents informational continuation results, usually handled automatically by the server, such as 100 Continue and 101 Switching Protocols.
+* 2XX are successful results.
+* 3XX are related to redirections.
+* 4XX are request errors (from the client side), usually introduced by the user, such as an empty required field.
+* 5XX are server-side errors that the client cannot do anything about.
+
+### HTTP headers
+
+Web services leverage HTTP headers to transmit client's information and describe their options and capabilities.
+
+* Location hearder: after creating an entity (201 created), the Location header should point to the GET endpoint where the client can access that new entity; After starting an asynchronous operation (202 Accepted), the Location header could point to the status endpoint where you can poll for the state of the operation (has it completed, failed, or is it still ongoing); when redirecting a client, the Location header contains the destination URL.
+* Retry-after: it can also come in handy when mixed with 202 Accepted, 301 Moved Permanently, 429 Too many Requests, or 503 Service Unavailable.
+* ETag: it identify the version of the entity and can be used in conjunction with If-Match to avoid mid-air-collision. The ETag and If-Match headers form a sort of optimistic concurrency method that prevents request two from overwriting changes made by request one when changes are happening simultaneously or not in the expected order; a.k.a. a way to manage conflicts.
+
+### Versioning
+
+It is a crucial aspect of REST API. It helps the API clients to query specific API versions when the contract changes **because both ends of the pipe must know what to expect, what API contract to respect.**
+
+### Default versioning strategy
+
+The best way as a default versioning is return the first version. It preserves backward compatibility and it does not break the consumers if more endpoints are added.
+
+### Versioning strategy
+
+A simple way to solve that could be leverage URL patterns to define and include the API version, such as https: //localhost/v2/some-entities. This is easier to query from a browser, making it simple to know the version ar a glance, but the endpoint is not pointing to a unique resource anymore (**a key principle of REST**) as each resource has one endpoint for each version.
+
+Another way is to use HTTP header, including a custom header like api-version or Accept-version or the Accept standard header. Through that the resources have unique endpoints while enabling multiple version of each entity.
+
+### Wrapping up
+
+With a method (verb), the client can express the intent to create, update, read, or delete an entity;
+With a status code, the endpoint can tell the client the state of the operations;
+By adding more headers, client and endpoint can add more metadata to the request or response;
+By adding versioning, the endpoint can evolve without breaking existing clients while giving options to consumers about the version they want to consume.
+
+## Model View Controller design pattern
+
+Good reasons to implement web APIs
+
+* it is an efficient way of sharing data between systems
+* it allows interoperability between technologies by dialoguing in universal languages, such as JSON or XML
+* it allows your backend to be centralized and shared with multiple frontends such as mobile, desktop, and web application;
+* it allows you to gate (secure, protect, or hide) downstream systems, with APIs acting as gateways;
+* it allows the encapsulation of units of logic in reusable, independent, and possibly even tiny systems.
+
+### Goal
+
+From the web API perspective, MVC pattern has the following task: **separate displaying (serializing) and entity into three distinct components that interact with each other** because doing that it helps have smaller pieces that are easier to maintain and test than big bloated ones that are very hard to test in isolation.
+
+### Design
+
+Three single responsibilities:
+
+* model: it is a data structure representing the domain that we are modeling;
+* view: it is to present a model to a user
+* controller: it is the key component of MVC. It plays the coordinator role between a request from a user to its response. The code of a controller should remain minimal and should not include complex logic or manipulation. The controller's primary responsibility is to handle a request and dispatch a response. **It is an HTTP bridge**
+
+## Anatomy of ASP.NET Core Web APIs
+
+To generate a new web api use the command dotnet new webapi
+
+### The entry point
+
+The first piece is the entry point: Program.cs. In this files there are:
+
+* registration: `builder.Services.AddControllers();`, `app.MapControllers();`
+* the default template also registers Swagger to generate OpenAPI specs automatically and a UI to visualize them.
+
+### Controller
+
+The easiest way to create a controller is create a class that inherits from ControllerBase. Another way is just decorate a class with [ApiController] attribute. By convention, the controller's class name is suffixed by Controller.
+
+ControllerBase, ApiControllerAttribute and attribute routing classes come form Microsoft.AspNetCore.Mvc namespace
+
+### Returning values
+
