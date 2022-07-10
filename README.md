@@ -621,3 +621,87 @@ ControllerBase, ApiControllerAttribute and attribute routing classes come form M
 
 ### Returning values
 
+The objectives of building a web API is to return data to its consumers and execute remote operations securely.
+
+Most of the plumbing is done by the ASP.NET core code, let's take a look at some helpers provided by the ControllerBase class:
+
+* **StatusCode method** allows specifying the status code to return. One can use constants defined in the StatusCode class to help or pass an int directly. See: https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.statuscodes?view=aspnetcore-6.0
+
+* The Ok method allows returning a status code 200 ok with an optional body
+
+* The created, CreatedAction, and other similar methods allow returning a status code 201 Created, including different options to **craft the Location URL representing the newly created resource**and optionally serialize that new entity as part of the response body.
+
+* The NoContent method allows returning a status code 204 No Content and an empty body
+
+* The NotFound method allows returning a status code 404 Not Found with an optional body
+
+* The BadRequest method allows returning a status code 400 Bad Request with an optional body representing the problems.
+
+* The Redirect, RedirectPermanent, and other similar methods allow returning a redirection status code like 302 Found and 301 Moved Permanently while exposing different options to craft the Location URL representing the redirection the client should follow.
+
+* The Accepted, AcceptedAtAction, and other similar methods allow the status code 202 Accepted to be returned, along with an optional body and different options to craft the Localtion URL representing the status endpoint.
+
+* The Conflict method allows the status code 409 Conflict to be returned with an optional body representing the error.
+
+There are at least four ways to return data to the client of API:
+
+* return the model directly
+* return an ActionResult<TValue> class
+* return an ActionResult class
+* return an IActionResult interface
+
+* IActionResult interface and ActionResult class are more abstract, constraining to use the helper methods exposed by ControllerBase or construct the resulting instances to return values. And they are not auto-discoverable by OpenAPI tools like Swagger.
+
+To solve the API discoverability, it could decorate the actions with the ProducesResponseType attribute:
+
+`[ProducesResponseType(typeof(WeatherForecast[]), StatusCodes.Status200OK)]`
+
+public IEnumerable<WeatherForecast> Get() => GetWeatherForecasts();
+
+public ActionResult<IEnumerable<WeatherForecast>> GenericClassActionDirect() => GetWeatherForecasts();
+
+public ActionResult<IEnumerable<WeatherForecast>> GenericClassActionOk() => Ok(GetWeatherForcasts());
+
+public ActionResult<IEnumerable<WeatherForecast>> GenericClassActionNotFound() => NotFound();
+
+### Attribute routing
+
+**Attribute routing maps an HTTP request to a controller action**, and the attributes decorate the controllers and the actions to create the complete routes.
+
+[ApiController]
+[Route("[controller]")]
+
+public class ValuesController : ControllerBase
+{
+    [HttpGet]
+    public ActionResult<IEnumerable<string>> Get() => default!;
+    [HttpGet("{id}")]
+    public ActionResult<string> Get(int id) => default!;
+    [HttpPost]
+    public void Post([FromBody] string value) { }
+    [HttpPut("{id}")]
+    public void Put(int id, [FromBody] string value) { }
+    [HttpDelete("{id}")]
+    public void Delete(int id) { }
+}
+
+[Route("[controller]")] means that the actions of this controller are reachable through /values. Then the other attributes tell ASP.NET **to map** specific requests to specific methods. 
+For example: 
+[HttpGet] tells ASP.NET that GET /values should be map to the Get() method
+[HttpGet("{id}")] tells APS.NET that GET /values/1 requests should be routed to the Get(int id) method.
+
+**When designing a web API, the URL leading to your endpoints should be clear and concise, making it easier for consumers to discover and learn the API**.
+
+## Data Transfer Object design pattern
+
+**Data Transfer Object (DTO) pattern** is the equivalent of the View Model pattern, but for web APIs. Instead of targeting a view, **we are targeting the consumers of a web API endpoint**.
+
+The goal is to control the inputs and outputs of an endpoint **by decoupling the API contract from the application's inner working**, defining an API without thinking about the underlying data structures. The goal is design endpoints that are easier to consume, maintain and evolve.
+
+A data transfer object allows to design an API endpoint with a specific data contract (input and output) **instead of exposing the domain model**. **This separation between the presentation and the domain is a crucial** element that leads to having multiple independent components instead of a bigger, more fragile one.
+
+## API Contracts
+
+An API contract is the definition of a web API, because a consumer should know how to call an endpoint and what to expect from it in return. Each endpoint should have a signature and should enforce that signature.
+
+A contract, from dev perspective, is a model associated with a URI and an HTTP method.
