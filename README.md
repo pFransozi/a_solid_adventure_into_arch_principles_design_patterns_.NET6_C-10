@@ -690,18 +690,107 @@ For example:
 [HttpGet] tells ASP.NET that GET /values should be map to the Get() method
 [HttpGet("{id}")] tells APS.NET that GET /values/1 requests should be routed to the Get(int id) method.
 
-**When designing a web API, the URL leading to your endpoints should be clear and concise, making it easier for consumers to discover and learn the API**.
-
-## Data Transfer Object design pattern
-
-**Data Transfer Object (DTO) pattern** is the equivalent of the View Model pattern, but for web APIs. Instead of targeting a view, **we are targeting the consumers of a web API endpoint**.
+**When designing a web API, the URL leading to yourl-studiong the consumers of a web API endpoint**.
 
 The goal is to control the inputs and outputs of an endpoint **by decoupling the API contract from the application's inner working**, defining an API without thinking about the underlying data structures. The goal is design endpoints that are easier to consume, maintain and evolve.
 
 A data transfer object allows to design an API endpoint with a specific data contract (input and output) **instead of exposing the domain model**. **This separation between the presentation and the domain is a crucial** element that leads to having multiple independent components instead of a bigger, more fragile one.
 
-## API Contracts
+### API Contracts
 
 An API contract is the definition of a web API, because a consumer should know how to call an endpoint and what to expect from it in return. Each endpoint should have a signature and should enforce that signature.
 
 A contract, from dev perspective, is a model associated with a URI and an HTTP method.
+
+## Understanding the Strategy, abstract factory, and singleton design patterns
+
+### strategy design pattern
+
+**It is a behavioral design pattern that allows us to change object behaviors at runtime**. **It alows us to compose complex object tree and rely on it to follow the Open/Closed Principle (OCP)**. Strategy pattern plays a significant role in the composition over inheritance way of thinking.
+
+The goal of strategy pattern is to extract an algorithm (strategy) from the host class needing it, allowing the consumer to decide on the strategy to use at runtime. 
+
+For example: we could design a system that fetches data from two different types of databases. Then we could apply the same logic over that data and use the same over interface to display it. Using the strategy pattern, we could crate two strategies, FetchDataFromSQL and FetchDataFromCosmosDb, both contracted with IStrategy. So, we could plug the strategy that we need at runtime in the context class. That way, when the consumer calls the context, the context does not need to know where the data comes from, how it is fetched, or what strategy is in use; it only gets what it needs to work, delegating the fetching responsibility to an abstracted strategy.
+
+FetchDataFromSQL:IStrategy
++ ExecuteAlgo():void
+
+FetchDataFromCosmosDb:IStrategy
++ ExecuteAlgo():void
+
+ContextClass
+-IStrategy fetch_database
++SomeOperation():void
+
+The building blocks of the **Strategy pattern** go as follows:
+* Context is a class that **delegates one or more operations to an IStrategy implementation**.
+* **IStrategy is an interface defining the strategies**.
+* FetchDataFromSQL and FetchDataFromCosmosDb represent one or more different concrete implementations of the IStrategy interface.
+
+That is the strength of the Strategy pattern: it abstracts the implementation away from both the Context and the consumer. Because of that, we can change the strategy during either the object creation or at runtime without the object knowing, changing its behavior on the fly.
+
+The Strategy design pattern is very effective at delegating responsibilities to other objects, allowing you to delegate the responsibility of an algorithm to other objects while keeping its usage trivial. It also allows having a rich interface (context) with behaviors that can change during the program’s execution.
+
+Meanwhile, the Strategy pattern is excellent at helping us follow the SOLID principles:
+
+* S: It helps to extract responsibilities to external classes and use them, interchangeably, later.
+* O: It allows extending classes without updating its code by changing the current strategy at
+runtime.
+* L: It does not rely on inheritance. Moreover, it plays a large role in the composition over inheritance principle, helping us avoid inheritance altogether and, at the same time, the LSP.
+* I: By creating smaller strategies based on lean and focused interfaces, the Strategy pattern is an excellent enabler for respecting the ISP.
+D: The creation of dependencies is moved from the class using the strategy (the context) to the
+class’s consumer. That makes the context depend on abstraction instead of implementation,
+inverting the flow of control.
+
+### abstract factory design pattern
+
+It is a creational design pattern, used to create other objects. The Strategy pattern is the backbone of dependency injection, enabling the composition of complex object trees, while factories are used to create some of those complex objects that can’t be assembled automatically by a dependency injection library.
+
+**The abstract factory pattern goal is to abstract the creation of a family of objects**. 
+
+With Abstract Factory, the consumer asks for an abstract object and gets one. The factory is an
+abstraction, and the resulting objects are also abstractions, decoupling the object creation from the consumers.
+
+For example:
+
+* IVehicleFactory is an Abstract Factory defining two methods: one that creates cars of type
+ICar and another that creates bikes of type IBike.
+* HighGradeVehicleFactory is an implementation of the Abstract Factory that handles highgrade vehicle model creation. This concrete factory returns instances of type HighGradeCar
+or HighGradeBike.
+* LowGradeVehicleFactory is an implementation of our Abstract Factory that handles lowgrade vehicle model creation. This concrete factory returns instances of type LowGradeCar
+or LowGradeBike.
+* LowGradeCar and HighGradeCar are two implementations of ICar.
+* LowGradeBike and HighGradeBike are two implementations of IBike.
+
+**A consumer uses the IVehicleFactory interface and should not be aware of the concrete factory used underneath, abstracting away the vehicle creation process**.
+
+Abstract Factory is an excellent pattern to abstract away the creation of object families, isolating each family and its concrete implementation, leaving the consumers unaware of (decoupled from) the family being created at runtime.
+
+Abstract Factory pattern can help us follow the SOLID principles:
+
+* S: Each concrete factory has the sole responsibility of creating a family of objects. You could combine Abstract Factory with other creational patterns such as the Prototype and Builder
+patterns for more complex creational needs.
+* O: The consumer is open to extension but closed for modification; as we did in the “expansion”
+sample, we can add new families without modifying the code that uses it.
+* L: We are aiming at composition, so there’s no need for any inheritance, implicitly discarding
+the need for the LSP. If you use abstract classes in your design, you need to make sure you
+don’t break the LSP when creating new abstract factories.
+* I: By extracting an abstraction that creates other objects, it makes that interface very focused
+on one task, which is in line with the ISP, creating flexibility at a minimal cost.
+* D: By depending only on interfaces, the consumer is not aware of the concrete types that it
+is using.
+
+### Singleton design pattern
+
+It allows creating and reusing a single instance of a class. We are exploring the Singleton pattern in this chapter because it relates to dependency injection.
+
+The singleton pattern goal is to limit the number of instances of a class to one. A singleton encapsulates both the object logic itself and its creational logic.
+
+**The Singleton pattern promotes that one object must have two responsibilities, breaking the Single Responsibility Principle (SRP). A singleton is the object and its own factory**.
+
+**Singleton class is composed of the following**:
+
+* A private static field that holds its unique instance.
+* A public static Create() method that creates or returns the unique instance.
+* A private constructor, so external code cannot instantiate it without passing by the Create
+method.
